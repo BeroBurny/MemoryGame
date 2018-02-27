@@ -49,18 +49,32 @@ function  menuClickHandler(element){
 
 function buildGrid(){
 	let card = [];
+	let order = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
+
 	while (card.length < 8) {
 		let tempCard = cardIcons[Math.floor(Math.random() * cardIcons.length)];
 		for (var i = 0; i < card.length; i++) if(card[i] === tempCard) card.splice(i, 1);
 		card.push(tempCard);
 	}
 	for (var i = 0; i < 8; i++) {
-		createCard(card[i]);
-		createCard(card[i]);
+		createCard(card[i], pozManage());
+		createCard(card[i], pozManage());
+	}
+
+	function pozManage(){
+		let need = true;
+		let numb = 0;
+		while (need) {
+			let tempNumb = Math.floor(Math.random() * 16);
+			if(!order[tempNumb]) need = false;
+			numb = tempNumb;
+		}
+		order[numb] = true;
+		return numb;
 	}
 }
 
-function createCard(card){
-	let htmlElement = "<div class=\"card\"><i class=\"fas fa-" + card + "\"></i></div>";
+function createCard(card, order){
+	let htmlElement = "<div class=\"card\" style=\"order: " + order + ";\"><i class=\"fas fa-" + card + "\"></i></div>";
 	document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
 }
