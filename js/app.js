@@ -48,14 +48,19 @@ function  menuClickHandler(element){
 }
 
 function buildGrid(){
+	let card = [];
+	while (card.length < 8) {
+		let tempCard = cardIcons[Math.floor(Math.random() * cardIcons.length)];
+		for (var i = 0; i < card.length; i++) if(card[i] === tempCard) card.splice(i, 1);
+		card.push(tempCard);
+	}
 	for (var i = 0; i < 8; i++) {
-		let card = cardIcons[Math.floor(Math.random() * cardIcons.length)];
-		createCards(card);
-		createCards(card);
+		createCard(card[i]);
+		createCard(card[i]);
 	}
 }
 
-function createCards(card){
+function createCard(card){
 	let htmlElement = "<div class=\"card\"><i class=\"fas fa-" + card + "\"></i></div>";
 	document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
 }
