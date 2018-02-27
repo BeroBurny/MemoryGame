@@ -72,9 +72,9 @@ function buildGrid(){
 		order[numb] = true;
 		return numb;
 	}
-}
 
-function createCard(card, order){
-	let htmlElement = "<div class=\"card\" style=\"order: " + order + ";\"><i class=\"fas fa-" + card + "\"></i></div>";
-	document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
+	function createCard(card, order){
+		let htmlElement = "<div class=\"card\" style=\"order: " + order + ";\"><i class=\"fas fa-" + card + "\"></i></div>";
+		document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
+	}
 }
