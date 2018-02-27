@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
 });
 
+window.addEventListener('resize', sysHeight);
+
+function sysHeight(){
+	document.getElementById("game").style.height = document.getElementById("game").offsetWidth + "px";
+}
+
 function  menuClickHandler(element){
 	if(element.path[1].id != "main-menu"){
 		switch (element.path[1].id) {
@@ -40,4 +46,18 @@ function  menuClickHandler(element){
 				console.log(element);
 		}
 	}
+}
+
+function buildGrid(){
+	for (var i = 0; i < 8; i++) {
+		let card = cardIcons[Math.floor(Math.random() * cardIcons.length)];
+		console.log(card);
+		createCards(card);
+		createCards(card);
+	}
+}
+
+function createCards(card){
+	let htmlElement = "<div class=\"card\"><i class=\"fas fa-" + card + "\"></i></div>";
+	document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
 }
