@@ -20,6 +20,7 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bell", "bug", "bomb", "
 
 document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
+	setTimeout(function () { sysHeight(); buildGrid(); }, 1500);
 });
 
 window.addEventListener('resize', sysHeight);

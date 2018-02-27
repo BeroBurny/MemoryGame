@@ -33,7 +33,30 @@ body {
 	}
 }
 
-#game, #menu, #end{
+#game {
+	z-index: 2;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: stretch;
+	width: 40%;
+	height: 1px;
+	background-color: lightgray;
+
+	.card {
+		display: block;
+		flex-grow: 1;
+		width: 23%;
+		background-color: lightblue;
+		text-align: center;
+		font-size: 500%;
+
+		i {
+			transform: translate(0%, 50%);
+		}
+	}
+}
+
+#menu, #end{
 	display: none;
 }
 
