@@ -48,8 +48,7 @@ function  menuClickHandler(element){
 }
 
 function buildGrid(){
-	let card = [];
-	let order = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
+	let card = [], order = [];
 
 	while (card.length < 8) {
 		let tempCard = cardIcons[Math.floor(Math.random() * cardIcons.length)];
