@@ -11,10 +11,10 @@ eye-dropper		filter	volume-up		gamepad
 fire flag		bath	headphones
 */
 
-const cardIcons = [ "user-secret", "ambulance", "bath", "bell", "bug", "bomb", "birthday-cake", "tint", "volume-up",
-					"car", "camera", "camera-retro", "bus", "briefcase", "bowling-ball", "compass", "envelope",
-					"female", "eye", "fire-extinguisher", "filter", "fire", "flag", "football-ball", "gamepad",
-					"gem", "graduation-cap", "heartbeat", "headphones", "image", "shopping-bag", "eye-dropper", "thermometer-half" ];
+const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "birthday-cake", "tint", "volume-up",
+					"eye-dropper", "camera", "camera-retro", "bell", "briefcase", "bowling-ball", "compass", "bomb",
+					"heartbeat", "eye", "fire-extinguisher", "filter", "fire", "envelope", "football-ball", "gamepad",
+					"gem", "graduation-cap", "car", "headphones", "image", "shopping-bag", "female", "thermometer-half" ];
 
 document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
@@ -23,30 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // temp
-function flipcard(element){
-	if(element.path[0].id != "game" && element.path[0].className != "card-space"){
-		let elem = element.srcElement.parentElement;
-		if(element.srcElement.parentElement.className !=  "card")
-			elem = element.srcElement.parentElement.parentElement;
-		let rotType = elem.style.transform != "rotateY(180deg)";
-		myMove(elem, rotType);
-	}
-
-	function myMove(elem, type) {
-		var pos = 0;
-		type ? pos = 0 : pos = 180;
-		var id = setInterval(frame, 15);
-		function frame() {
-			if (pos == 180 && type) clearInterval(id);
-			else if ((pos ==  0 && !type)) clearInterval(id);
-			else {
-				type ? pos += 10 : pos -= 10;
-				elem.style.transform = "rotateY( " + pos + "deg )";
-			}
-		}
-	}
-}
-
 
 // temp end
 
@@ -110,5 +86,29 @@ function buildGrid(){
 								"</div>" +
 							"</div>";
 		document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
+	}
+}
+
+function flipcard(element){
+	if(element.path[0].id != "game" && element.path[0].className != "card-space"){
+		let elem = element.srcElement.parentElement;
+		if(element.srcElement.parentElement.className !=  "card")
+			elem = element.srcElement.parentElement.parentElement;
+		let rotType = elem.style.transform != "rotateY(180deg)";
+		myMove(elem, rotType);
+	}
+
+	function myMove(elem, type) {
+		var pos = 0;
+		type ? pos = 0 : pos = 180;
+		var id = setInterval(frame, 15);
+		function frame() {
+			if (pos == 180 && type) clearInterval(id);
+			else if ((pos ==  0 && !type)) clearInterval(id);
+			else {
+				type ? pos += 10 : pos -= 10;
+				elem.style.transform = "rotateY( " + pos + "deg )";
+			}
+		}
 	}
 }

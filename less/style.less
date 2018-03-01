@@ -47,6 +47,17 @@ body {
 	border-width: 5px;
 	border-color: rgba(1, 1, 1, 0.1);
 	border-radius: 15px;
+	text-align: center;
+	font-size: 500%;
+
+	@media (orientation : portrait){
+		width: 90%;
+		font-size: 300%;
+	}
+
+	@media (max-width : 900px) {
+		font-size: 300%;
+	}
 
 	.card-space {
 		flex-grow: 1;
@@ -79,8 +90,6 @@ body {
 			.back {
 				transform: rotateY( 180deg );
 				background-color: white;
-				text-align: center;
-				font-size: 500%;
 			}
 		}
 	}
