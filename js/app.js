@@ -25,19 +25,36 @@ document.addEventListener('DOMContentLoaded', function () {
 // temp
 function flipcard(element){
 	if(element.path[0].id != "game" && element.path[0].className != "card-space"){
-		let elen = element.srcElement.parentElement;
+		let elem = element.srcElement.parentElement;
 		if(element.srcElement.parentElement.className !=  "card")
-			elen = element.srcElement.parentElement.parentElement;
-		elen.firstChild.classList.toggle("flipped");
-		elen.lastChild.classList.toggle("flipped");
+			elem = element.srcElement.parentElement.parentElement;
+		let rotType = elem.style.transform != "rotateY(180deg)";
+		myMove(elem, rotType);
+	}
+
+	function myMove(elem, type) {
+		var pos = 0;
+		type ? pos = 0 : pos = 180;
+		var id = setInterval(frame, 15);
+		function frame() {
+			if (pos == 180 && type) clearInterval(id);
+			else if ((pos ==  0 && !type)) clearInterval(id);
+			else {
+				type ? pos += 10 : pos -= 10;
+				elem.style.transform = "rotateY( " + pos + "deg )";
+			}
+		}
 	}
 }
+
+
 // temp end
 
 window.addEventListener('resize', sysHeight);
 
 function sysHeight(){
 	document.getElementById("game").style.height = document.getElementById("game").offsetWidth + "px";
+	document.getElementById("game").style.perspective = document.getElementById("game").offsetWidth + "px";
 }
 
 function  menuClickHandler(element){
@@ -89,7 +106,7 @@ function buildGrid(){
 		let htmlElement = "<div class=\"card-space\" style=\"order: " + order + ";\">" +
 								"<div class=\"card\">" +
 									"<figure class=\"front\"></figure>" +
-									"<figure class=\"back flipped\"><i class=\"center fas fa-" + card + "\"></i></figure>" +
+									"<figure class=\"back\"><i class=\"center fas fa-" + card + "\"></i></figure>" +
 								"</div>" +
 							"</div>";
 		document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
