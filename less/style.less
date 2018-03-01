@@ -35,23 +35,52 @@ body {
 
 #game {
 	z-index: 2;
+	padding: 1%;
 	display: flex;
+	position: relative;
 	flex-flow: row wrap;
 	justify-content: stretch;
 	width: 40%;
-	height: 1px;
 	background-color: lightgray;
 
-	.card {
-		display: block;
+	.card-space {
 		flex-grow: 1;
 		width: 23%;
-		background-color: lightblue;
-		text-align: center;
-		font-size: 500%;
+		padding: 1%;
 
-		i {
-			transform: translate(0%, 50%);
+		position: relative;
+
+		background-color: lightblue;
+
+		.card {
+			width: 92%;
+			height: 92%;
+			position: absolute;
+			transform-style: preserve-3d;
+
+			text-align: center;
+			font-size: 500%;
+
+			background-color: lightgray;
+
+			figure {
+				margin: 0;
+				display: block;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				backface-visibility: hidden;
+			}
+
+			.front {
+			}
+
+			.back {
+			}
+
+			.flipped {
+				transform: rotateY( 180deg );
+			}
 		}
 	}
 }

@@ -18,8 +18,21 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bell", "bug", "bomb", "
 
 document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
+	document.querySelector("#game").addEventListener("click", flipcard);
 	setTimeout(function () { sysHeight(); buildGrid(); }, 1500);
 });
+
+// temp
+function flipcard(element){
+	if(element.path[0].id != "game" && element.path[0].className != "card-space"){
+		let elen = element.srcElement.parentElement;
+		if(element.srcElement.parentElement.className !=  "card")
+			elen = element.srcElement.parentElement.parentElement;
+		elen.firstChild.classList.toggle("flipped");
+		elen.lastChild.classList.toggle("flipped");
+	}
+}
+// temp end
 
 window.addEventListener('resize', sysHeight);
 
@@ -73,7 +86,12 @@ function buildGrid(){
 	}
 
 	function createCard(card, order){
-		let htmlElement = "<div class=\"card\" style=\"order: " + order + ";\"><i class=\"fas fa-" + card + "\"></i></div>";
+		let htmlElement = "<div class=\"card-space\" style=\"order: " + order + ";\">" +
+								"<div class=\"card\">" +
+									"<figure class=\"front\"></figure>" +
+									"<figure class=\"back flipped\"><i class=\"center fas fa-" + card + "\"></i></figure>" +
+								"</div>" +
+							"</div>";
 		document.getElementById("game").insertAdjacentHTML("beforeend", htmlElement);
 	}
 }
