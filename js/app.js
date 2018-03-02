@@ -104,9 +104,9 @@ function flipcard(element){
 		var id = setInterval(frame, 15);
 		function frame() {
 			if (pos == 180 && type) clearInterval(id);
-			else if ((pos ==  0 && !type)) clearInterval(id);
+			else if ((pos ==  360 && !type)) clearInterval(id);
 			else {
-				type ? pos += 10 : pos -= 10;
+				pos += 10;
 				elem.style.transform = "rotateY( " + pos + "deg )";
 			}
 		}
