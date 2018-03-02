@@ -25,23 +25,26 @@ document.addEventListener('DOMContentLoaded', function () {
 // temp
 let cardMap = {
 	map: [[]],
-	startTime: new Date(),
+	startTime: new Date(), // treba koristit milisekunde
 	activeCards: 0,
-	canOpen: true,
+	firstCard: false,
 
-	// setters
 	addCard (id, open, correct) {
 		this.map[id] = [open, correct];
 	},
+
 	openCard (id) {
 		this.map[id][0] = true;
 		this.activeCards++;
-		this.canOpen = this.activeCards >= 2 ? false: true;
 	},
+
 	closeCard (id) {
 		this.map[id][0] = false;
 		this.activeCards--;
-		this.canOpen = this.activeCards >= 2 ? false: true;
+	},
+
+	get secondCard () {
+		return this.activeCards >= 2 ? false: true;
 	},
 };
 
@@ -112,7 +115,7 @@ function buildGrid(){
 }
 
 function clickCard(element){
-	if(cardMap.canOpen && element.path[0].id != "game" && element.path[0].className != "card-space"){
+	if(cardMap.secondCard && element.path[0].id != "game" && element.path[0].className != "card-space"){
 		let elem;
 		if(element.srcElement.parentElement.className !=  "card") {
 			elem = element.srcElement.parentElement.parentElement;
