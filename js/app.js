@@ -112,10 +112,20 @@ function buildGrid(){
 }
 
 function clickCard(element){
-	if(element.path[0].id != "game" && element.path[0].className != "card-space"){
-		let elem = element.srcElement.parentElement;
-		if(element.srcElement.parentElement.className !=  "card")
+	if(cardMap.canOpen && element.path[0].id != "game" && element.path[0].className != "card-space"){
+		let elem;
+		if(element.srcElement.parentElement.className !=  "card") {
 			elem = element.srcElement.parentElement.parentElement;
+			if(!cardMap.map[element.path[3].style.order][0])
+				cardMap.openCard(element.path[3].style.order);
+			else cardMap.closeCard(element.path[3].style.order);
+		} else {
+			elem = element.srcElement.parentElement;
+			if(!cardMap.map[element.path[2].style.order][0])
+				cardMap.openCard(element.path[2].style.order);
+			else cardMap.closeCard(element.path[2].style.order);
+		}
+
 		let rotType = elem.style.transform != "rotateY(180deg)";
 		flipCard(elem, rotType);
 	}
