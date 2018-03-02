@@ -18,7 +18,7 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "b
 
 document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
-	document.querySelector("#game").addEventListener("click", flipcard);
+	document.querySelector("#game").addEventListener("click", clickCard);
 	setTimeout(function () { sysHeight(); buildGrid(); }, 1500);
 });
 
@@ -89,26 +89,26 @@ function buildGrid(){
 	}
 }
 
-function flipcard(element){
+function clickCard(element){
 	if(element.path[0].id != "game" && element.path[0].className != "card-space"){
 		let elem = element.srcElement.parentElement;
 		if(element.srcElement.parentElement.className !=  "card")
 			elem = element.srcElement.parentElement.parentElement;
 		let rotType = elem.style.transform != "rotateY(180deg)";
-		myMove(elem, rotType);
+		flipCard(elem, rotType);
 	}
+}
 
-	function myMove(elem, type) {
-		var pos = 0;
-		type ? pos = 0 : pos = 180;
-		var id = setInterval(frame, 15);
-		function frame() {
-			if (pos == 180 && type) clearInterval(id);
-			else if ((pos ==  360 && !type)) clearInterval(id);
-			else {
-				pos += 10;
-				elem.style.transform = "rotateY( " + pos + "deg )";
-			}
+function flipCard(elem, type) {
+	var pos = 0;
+	type ? pos = 0 : pos = 180;
+	var id = setInterval(frame, 15);
+	function frame() {
+		if (pos == 180 && type) clearInterval(id);
+		else if ((pos ==  360 && !type)) clearInterval(id);
+		else {
+			pos += 10;
+			elem.style.transform = "rotateY( " + pos + "deg )";
 		}
 	}
 }
