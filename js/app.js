@@ -23,6 +23,27 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // temp
+let cardMap = {
+	map: [[]],
+	startTime: new Date(),
+	activeCards: 0,
+	canOpen: true,
+
+	// setters
+	addCard (id, open, correct) {
+		this.map[id] = [open, correct];
+	},
+	openCard (id) {
+		this.map[id][0] = true;
+		this.activeCards++;
+		this.canOpen = this.activeCards >= 2 ? false: true;
+	},
+	closeCard (id) {
+		this.map[id][0] = false;
+		this.activeCards--;
+		this.canOpen = this.activeCards >= 2 ? false: true;
+	},
+};
 
 // temp end
 
@@ -79,6 +100,7 @@ function buildGrid(){
 	}
 
 	function createCard(card, order){
+		cardMap.addCard(order, false, false)
 		let htmlElement = "<div class=\"card-space\" style=\"order: " + order + ";\">" +
 								"<div class=\"card\">" +
 									"<figure class=\"front\"></figure>" +
