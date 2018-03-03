@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
 // temp
 let cardMap = {
 	map: [[]],
-	startTime: new Date(), // treba koristit milisekunde
+	startTime: false,
+	endTime: false,
+	intervalTimerObj: false,
 	activeCards: 0,
 	firstCard: false,
 	clicks: 0,
@@ -46,6 +48,12 @@ let cardMap = {
 	closeCard (id) {
 		this.map[id][0] = false;
 		this.activeCards--;
+	},
+
+	startTimer () {
+		this.startTime = Date.now();
+		this.endTime = this.startTime + (1 * 60 * 60 * 1000) - 1;
+		gameTimerUI();
 	},
 
 	get secondCard () {
@@ -119,6 +127,21 @@ function buildGrid(){
 	}
 }
 
+function gameTimerUI() {
+	cardMap.intervalTimerObj = setInterval(updateUI, 11);
+	function updateUI() {
+		if(cardMap.endTime <= Date.now()) clearInterval(this.intervalTimerObj);
+		const timePasst = Date.now() - cardMap.startTime;
+		let time = [ Math.floor(timePasst % 1000),
+					Math.floor((timePasst / 1000) % 60),
+					Math.floor((timePasst / (1000*60)) % 60) ];
+
+		document.getElementById("mil").innerHTML = time[0];
+		document.getElementById("sec").innerHTML = time[1];
+		document.getElementById("min").innerHTML = time[2];
+	}
+}
+
 function clickCard(element){
 	if(cardMap.secondCard && element.path[0].id != "game" && element.path[0].className != "card-space"){
 		let elem;
@@ -137,6 +160,7 @@ function clickCard(element){
 		let rotType = elem.style.transform != "rotateY(180deg)";
 		flipCard(elem, rotType);
 		cardMap.addClick();
+		if (!cardMap.startTime) cardMap.startTimer();
 	}
 }
 
