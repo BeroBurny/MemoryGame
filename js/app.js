@@ -25,12 +25,15 @@ document.addEventListener('DOMContentLoaded', function () {
 // temp
 let cardMap = {
 	map: [[]],
+
 	startTime: false,
 	endTime: false,
 	intervalTimerObj: false,
+
 	activeCards: 0,
 	firstCard: false,
 	clicks: 0,
+	movesLeft: 8,
 
 	addCard (id, open, correct) {
 		this.map[id] = [open, correct];
@@ -56,11 +59,33 @@ let cardMap = {
 		gameTimerUI();
 	},
 
+	resetGame () {
+		this.map = [[]];
+		this.startTime = false;
+		this.endTime = false;
+		clearInterval(this.intervalTimerObj);
+		this.intervalTimerObj = false;
+
+		this.activeCards = 0;
+		this.firstCard = false;
+		this.movesLeft = 8;
+		emtyGrid();
+		buildGrid();
+
+		document.getElementById("mil").innerHTML = "000";
+		document.getElementById("sec").innerHTML = "00";
+		document.getElementById("min").innerHTML = "00";
+	},
+
 	get secondCard () {
 		return this.activeCards >= 2 ? false: true;
 	},
 };
 
+function emtyGrid() {
+	for(let card of document.querySelectorAll(".card-space"))
+		card.remove();
+}
 // temp end
 
 window.addEventListener('resize', sysHeight);
