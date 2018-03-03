@@ -52,7 +52,7 @@ let cardMap = {
 
 	startTimer () {
 		this.startTime = Date.now();
-		this.endTime = this.startTime + (1 * 60 * 60 * 1000) - 1;
+		this.endTime = this.startTime + (60 * 60 * 1000) - 1;
 		gameTimerUI();
 	},
 
@@ -130,7 +130,7 @@ function buildGrid(){
 function gameTimerUI() {
 	cardMap.intervalTimerObj = setInterval(updateUI, 11);
 	function updateUI() {
-		if(cardMap.endTime <= Date.now()) clearInterval(this.intervalTimerObj);
+		if(cardMap.endTime <= Date.now()) clearInterval(cardMap.intervalTimerObj);
 		const timePasst = Date.now() - cardMap.startTime;
 		let time = [ Math.floor(timePasst % 1000),
 					Math.floor((timePasst / 1000) % 60),
