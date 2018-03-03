@@ -28,9 +28,14 @@ let cardMap = {
 	startTime: new Date(), // treba koristit milisekunde
 	activeCards: 0,
 	firstCard: false,
+	clicks: 0,
 
 	addCard (id, open, correct) {
 		this.map[id] = [open, correct];
+	},
+
+	addClick (){
+		this.clicks++;
 	},
 
 	openCard (id) {
@@ -131,6 +136,7 @@ function clickCard(element){
 
 		let rotType = elem.style.transform != "rotateY(180deg)";
 		flipCard(elem, rotType);
+		cardMap.addClick();
 	}
 }
 
