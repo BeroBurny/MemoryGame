@@ -42,6 +42,8 @@ let cardMap = {
 
 	addClick (){
 		this.clicks++;
+
+		document.getElementById("clicks").innerHTML = this.clicks;
 	},
 
 	openCard (id) {
@@ -92,6 +94,8 @@ let cardMap = {
 		document.getElementById("mil").innerHTML = "000";
 		document.getElementById("sec").innerHTML = "00";
 		document.getElementById("min").innerHTML = "00";
+
+		document.getElementById("clicks").innerHTML = "0";
 	},
 
 	get gameWin () {
