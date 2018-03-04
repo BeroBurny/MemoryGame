@@ -27,11 +27,12 @@ let cardMap = {
 	map: [[]],
 
 	startTime: false,
+	finishTime: false,
 	endTime: false,
 	intervalTimerObj: false,
 
 	activeCards: 0,
-	firstCard: false,
+	firstCard: true,
 	clicks: 0,
 	movesLeft: 8,
 
@@ -53,6 +54,21 @@ let cardMap = {
 		this.activeCards--;
 	},
 
+	theyMatch (cardA, cardB) {
+		this.map[cardA][1] = true;
+		this.map[cardB][1] = true;
+		this.activeCards = 0;
+		this.firstCard = true;
+		this.movesLeft--;
+	},
+
+	dintMatch (cardA, cardB) {
+		this.map[cardA][0] = false;
+		this.map[cardB][0] = false;
+		this.activeCards = 0;
+		this.firstCard = true;
+	},
+
 	startTimer () {
 		this.startTime = Date.now();
 		this.endTime = this.startTime + (60 * 60 * 1000) - 1;
@@ -62,12 +78,13 @@ let cardMap = {
 	resetGame () {
 		this.map = [[]];
 		this.startTime = false;
+		this.finishTime = false,
 		this.endTime = false;
 		clearInterval(this.intervalTimerObj);
 		this.intervalTimerObj = false;
 
 		this.activeCards = 0;
-		this.firstCard = false;
+		this.firstCard = true;
 		this.movesLeft = 8;
 		emtyGrid();
 		buildGrid();
@@ -75,6 +92,10 @@ let cardMap = {
 		document.getElementById("mil").innerHTML = "000";
 		document.getElementById("sec").innerHTML = "00";
 		document.getElementById("min").innerHTML = "00";
+	},
+
+	get gameWin () {
+		return this.movesLeft > 0 ? false: true;
 	},
 
 	get secondCard () {
@@ -169,23 +190,58 @@ function gameTimerUI() {
 
 function clickCard(element){
 	if(cardMap.secondCard && element.path[0].id != "game" && element.path[0].className != "card-space"){
-		let elem;
+		let elem, cartNum, cardName;
 		if(element.srcElement.parentElement.className !=  "card") {
 			elem = element.srcElement.parentElement.parentElement;
-			if(!cardMap.map[element.path[3].style.order][0])
-				cardMap.openCard(element.path[3].style.order);
-			else cardMap.closeCard(element.path[3].style.order);
+			cartNum = element.path[3].style.order;
+			cardName = element.path[0].classList[2];
 		} else {
 			elem = element.srcElement.parentElement;
-			if(!cardMap.map[element.path[2].style.order][0])
-				cardMap.openCard(element.path[2].style.order);
-			else cardMap.closeCard(element.path[2].style.order);
+			cartNum = element.path[2].style.order;
+			if(cardMap.map[cartNum][0]) cardName = element.path[0].firstChild.classList[2];
+			else cardName = element.path[0].nextSibling.firstChild.classList[2];
 		}
+		if(!cardMap.map[cartNum][1] && !cardMap.gameWin) {
+			let rotType = elem.style.transform != "rotateY(180deg)";
+			flipCard(elem, rotType);
+			cardMap.addClick();
 
-		let rotType = elem.style.transform != "rotateY(180deg)";
-		flipCard(elem, rotType);
-		cardMap.addClick();
-		if (!cardMap.startTime) cardMap.startTimer();
+			setTimeout(function () {
+				if(cardMap.map[cartNum][0]){
+					cardMap.closeCard(cartNum);
+					cardMap.firstCard = true;
+				}
+				else {
+					cardMap.openCard(cartNum);
+					if(cardMap.firstCard === true) cardMap.firstCard = [elem, cartNum, cardName];
+					else if (cardMap.firstCard[2] === cardName) {
+						elem.lastChild.classList.add("good");
+						cardMap.firstCard[0].lastChild.classList.add("good");
+
+						cardMap.theyMatch(cardMap.firstCard[1], cartNum);
+					} else {
+						elem.lastChild.classList.add("bad");
+
+						cardMap.firstCard[0].lastChild.classList.add("bad");
+						setTimeout(function() {
+							flipCard(elem, false);
+							flipCard(cardMap.firstCard[0], false);
+
+							elem.lastChild.classList.remove("bad");
+							cardMap.firstCard[0].lastChild.classList.remove("bad");
+
+							cardMap.dintMatch(cardMap.firstCard[1], cartNum);
+						}, 1000 );
+					}
+				}
+				if(cardMap.gameWin) {
+					cardMap.finishTime = Date.now();
+					clearInterval(cardMap.intervalTimerObj);
+					console.log("Win");
+				}
+			}, 300);
+		}
+		if(!cardMap.startTime) cardMap.startTimer();
 	}
 }
 
