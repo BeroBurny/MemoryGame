@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	setTimeout(function () { sysHeight(); buildGrid(); }, 1500);
 });
 
-// temp
 let cardMap = {
 	map: [[]],
 
@@ -30,6 +29,11 @@ let cardMap = {
 	finishTime: false,
 	endTime: false,
 	intervalTimerObj: false,
+
+	intervalStarsObj: false,
+	gamePoints: 300,
+	punishPoints: 0,
+	movePoints: 0,
 
 	activeCards: 0,
 	firstCard: true,
@@ -42,6 +46,7 @@ let cardMap = {
 
 	addClick (){
 		this.clicks++;
+		this.movePoints++;
 
 		document.getElementById("clicks").innerHTML = this.clicks;
 	},
@@ -69,6 +74,7 @@ let cardMap = {
 		this.map[cardB][0] = false;
 		this.activeCards = 0;
 		this.firstCard = true;
+		this.punishPoints += 2;
 	},
 
 	startTimer () {
@@ -77,13 +83,32 @@ let cardMap = {
 		gameTimerUI();
 	},
 
+	starDecay () {
+		this.gamePoints--;
+		if (this.punishPoints) {
+			this.punishPoints--;
+			this.gamePoints--;
+		}
+		if (this.movePoints) {
+			this.movePoints--;
+			this.gamePoints--;
+		}
+	},
+
 	resetGame () {
 		this.map = [[]];
+
 		this.startTime = false;
-		this.finishTime = false,
+		this.finishTime = false;
 		this.endTime = false;
 		clearInterval(this.intervalTimerObj);
 		this.intervalTimerObj = false;
+
+		clearInterval(this.intervalStarsObj);
+		this.intervalStarsObj = false;
+		this.gamePoints = 300;
+		this.punishPoints = 0;
+		this.movePoints = 0;
 
 		this.activeCards = 0;
 		this.firstCard = true;
@@ -96,6 +121,10 @@ let cardMap = {
 		document.getElementById("min").innerHTML = "00";
 
 		document.getElementById("clicks").innerHTML = "0";
+
+		document.getElementById("star1").style.backgroundImage = "linear-gradient(orange 100%, lightgray 100%)";
+		document.getElementById("star2").style.backgroundImage = "linear-gradient(orange 100%, lightgray 100%)";
+		document.getElementById("star3").style.backgroundImage = "linear-gradient(orange 100%, lightgray 100%)";
 	},
 
 	get gameWin () {
@@ -111,7 +140,6 @@ function emtyGrid() {
 	for(let card of document.querySelectorAll(".card-space"))
 		card.remove();
 }
-// temp end
 
 window.addEventListener('resize', sysHeight);
 
@@ -192,6 +220,42 @@ function gameTimerUI() {
 	}
 }
 
+function starsLogic() {
+
+	cardMap.intervalStarsObj = setInterval(updateStars, 100);
+
+	function updateStars() {
+		cardMap.starDecay();
+
+		if(!(cardMap.gamePoints >= 300)) {
+			let starID, points;
+			let lostStar = "linear-gradient(135deg, lightgray 14%, gray 15%, gray 29%, lightgray 30%, lightgray 44%, gray 45%, gray 59%, lightgray 60%,  lightgray 74%, gray 75%,  gray 89%, lightgray 90%)";
+			if(cardMap.gamePoints >= 200) {
+				starID = "star1";
+				points = cardMap.gamePoints - 200;
+			}
+			else if (cardMap.gamePoints < 200 &&  cardMap.gamePoints >= 100) {
+				starID = "star2";
+				points = cardMap.gamePoints - 100;
+			} else {
+				starID = "star3";
+				points = cardMap.gamePoints;
+			}
+
+			if(cardMap.gamePoints > 0 )
+				document.getElementById(starID).style.backgroundImage = "linear-gradient(to bottom, orange " + points + "%, lightgray " + points + "%)";
+
+			if (cardMap.gamePoints < 200 && cardMap.gamePoints >= 100) {
+				document.getElementById("star1").style.backgroundImage = lostStar;
+			} else if (cardMap.gamePoints < 100 && cardMap.gamePoints >= 0) {
+				document.getElementById("star2").style.backgroundImage = lostStar;
+			} if (cardMap.gamePoints < 0 ) {
+				document.getElementById("star3").style.backgroundImage = lostStar;
+			}
+		}
+	}
+}
+
 function clickCard(element){
 	if(cardMap.secondCard && element.path[0].id != "game" && element.path[0].className != "card-space"){
 		let elem, cartNum, cardName;
@@ -241,11 +305,15 @@ function clickCard(element){
 				if(cardMap.gameWin) {
 					cardMap.finishTime = Date.now();
 					clearInterval(cardMap.intervalTimerObj);
+					clearInterval(cardMap.intervalStarsObj);
 					console.log("Win");
 				}
 			}, 300);
 		}
-		if(!cardMap.startTime) cardMap.startTimer();
+		if(!cardMap.startTime) {
+			cardMap.startTimer();
+			starsLogic();
+		}
 	}
 }
 
