@@ -222,7 +222,7 @@ function gameTimerUI() {
 
 function starsLogic() {
 
-	cardMap.intervalStarsObj = setInterval(updateStars, 100);
+	cardMap.intervalStarsObj = setInterval(updateStars, 500);
 
 	function updateStars() {
 		cardMap.starDecay();
