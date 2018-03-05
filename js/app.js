@@ -19,6 +19,7 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "b
 document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
 	document.querySelector("#game").addEventListener("click", clickCard);
+	document.querySelector("#restart").addEventListener("click", restartGame);
 	setTimeout(function () { sysHeight(); buildGrid(); }, 1500);
 });
 
@@ -101,10 +102,8 @@ let cardMap = {
 		this.startTime = false;
 		this.finishTime = false;
 		this.endTime = false;
-		clearInterval(this.intervalTimerObj);
 		this.intervalTimerObj = false;
 
-		clearInterval(this.intervalStarsObj);
 		this.intervalStarsObj = false;
 		this.gamePoints = 300;
 		this.punishPoints = 0;
@@ -112,6 +111,7 @@ let cardMap = {
 
 		this.activeCards = 0;
 		this.firstCard = true;
+		this.clicks = 0;
 		this.movesLeft = 8;
 		emtyGrid();
 		buildGrid();
@@ -135,6 +135,13 @@ let cardMap = {
 		return this.activeCards >= 2 ? false: true;
 	},
 };
+
+function restartGame() {
+	clearInterval(cardMap.intervalTimerObj);
+	clearInterval(cardMap.intervalStarsObj);
+
+	cardMap.resetGame();
+}
 
 function emtyGrid() {
 	for(let card of document.querySelectorAll(".card-space"))
