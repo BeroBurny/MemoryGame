@@ -110,19 +110,33 @@ body {
 
 #game-timer{
 	position: fixed;
+	width: 25%;
 	top: 50%;
 	left: 0px;
 	transform: translate(0%, -50%);
+	padding: 2%;
+	text-align: center;
+
+	#restart {
+		margin-bottom: 20%;
+		font-size: 5vw;
+	}
+
+	h1	{
+		font-size: 3vw;
+	}
 }
 
 #game-stars {
 	position: fixed;
 	display: inline;
+	width: 25%;
 	top: 50%;
 	right: 0px;
 	transform: translate(0%, -50%);
-	font-size: 200%;
+	font-size: 2.5vw;
 	text-align: center;
+	padding: 2%;
 
 	#star1, #star2, #star3 {
 		background: linear-gradient(to bottom, orange 100%, lightgray 100%);
@@ -165,4 +179,5 @@ body {
 	top: 0%;
 	left: 0%;
 	padding: 2%;
+	font-size: 2vw;
 }

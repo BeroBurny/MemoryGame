@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
-	setTimeout(function () { sysHeight(); buildGrid(); }, 1500);
+	setTimeout(function () { sysHeight(); buildGrid(); }, 1000);
 });
 
 let cardMap = {
