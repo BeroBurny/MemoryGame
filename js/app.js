@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
+	document.querySelector("#restart-end").addEventListener("click", restartGame);
 	setTimeout(function () { sysHeight(); buildGrid(); }, 1000);
 });
 
@@ -127,6 +128,9 @@ let cardMap = {
 		document.getElementById("star1").style.backgroundImage = "linear-gradient(orange 100%, lightgray 100%)";
 		document.getElementById("star2").style.backgroundImage = "linear-gradient(orange 100%, lightgray 100%)";
 		document.getElementById("star3").style.backgroundImage = "linear-gradient(orange 100%, lightgray 100%)";
+
+		document.querySelector("#end").style.display = "none";
+		document.querySelector(".menu-bg").classList.remove("menu-bg-show");
 	},
 
 	get gameWin () {
@@ -264,6 +268,7 @@ function starsLogic() {
 				document.getElementById("star2").style.backgroundImage = lostStar;
 			} if (cardMap.gamePoints < 0 ) {
 				document.getElementById("star3").style.backgroundImage = lostStar;
+				endGame();
 			}
 		}
 	}
@@ -317,9 +322,7 @@ function clickCard(element){
 				}
 				if(cardMap.gameWin) {
 					cardMap.finishTime = Date.now();
-					clearInterval(cardMap.intervalTimerObj);
-					clearInterval(cardMap.intervalStarsObj);
-					console.log("Win");
+					endGame();
 				}
 			}, 300);
 		}
@@ -341,4 +344,31 @@ function clickCard(element){
 			}
 		}
 	}
+}
+
+function endGame() {
+	let endMsg;
+
+	clearInterval(cardMap.intervalTimerObj);
+	clearInterval(cardMap.intervalStarsObj);
+
+	if (cardMap.gamePoints > 200) endMsg = "Awesome job!";
+	else if (cardMap.gamePoints > 100) endMsg = "Great job!";
+	else if (cardMap.gamePoints > 0) endMsg = "Well done!";
+	else endMsg = "Better luck next time.";
+	document.getElementById("end-msg").innerHTML = endMsg;
+
+	const timePasst = cardMap.finishTime - cardMap.startTime;
+	let time = [ Math.floor(timePasst % 1000),
+				Math.floor((timePasst / 1000) % 60),
+				Math.floor((timePasst / (1000*60)) % 60) ];
+
+	if (cardMap.gamePoints > 0) document.getElementById("time").innerHTML = (time[2] + ":" + time[1] + ":" + time[0]);
+
+	if (cardMap.gamePoints > 0) document.querySelector("#end-star1").style.display = "inline";
+	if (cardMap.gamePoints > 100) document.querySelector("#end-star2").style.display = "inline";
+	if (cardMap.gamePoints > 200) document.querySelector("#end-star3").style.display = "inline";
+
+	document.querySelector("#end").style.display = "block";
+	document.querySelector(".menu-bg").classList.add("menu-bg-show");
 }
