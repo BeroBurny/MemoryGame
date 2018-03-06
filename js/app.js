@@ -230,9 +230,7 @@ function gameTimerUI() {
 }
 
 function starsLogic() {
-
 	cardMap.intervalStarsObj = setInterval(updateStars, 500);
-
 	function updateStars() {
 		cardMap.starDecay();
 
@@ -330,18 +328,17 @@ function clickCard(element){
 			starsLogic();
 		}
 	}
-}
-
-function flipCard(elem, type) {
-	var pos = 0;
-	type ? pos = 0 : pos = 180;
-	var id = setInterval(frame, 15);
-	function frame() {
-		if (pos == 180 && type) clearInterval(id);
-		else if ((pos ==  360 && !type)) clearInterval(id);
-		else {
-			pos += 10;
-			elem.style.transform = "rotateY( " + pos + "deg )";
+	function flipCard(elem, type) {
+		var pos = 0;
+		type ? pos = 0 : pos = 180;
+		var id = setInterval(frame, 15);
+		function frame() {
+			if (pos == 180 && type) clearInterval(id);
+			else if ((pos ==  360 && !type)) clearInterval(id);
+			else {
+				pos += 10;
+				elem.style.transform = "rotateY( " + pos + "deg )";
+			}
 		}
 	}
 }
