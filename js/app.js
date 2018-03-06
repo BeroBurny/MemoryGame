@@ -86,6 +86,8 @@ let cardMap = {
 
 	starDecay () {
 		this.gamePoints--;
+		if(this.gamePoints < 200 ) this.gamePoints--;
+		if(this.gamePoints < 100 ) this.gamePoints--;
 		if (this.punishPoints) {
 			this.punishPoints--;
 			this.gamePoints--;
@@ -221,9 +223,9 @@ function gameTimerUI() {
 					Math.floor((timePasst / 1000) % 60),
 					Math.floor((timePasst / (1000*60)) % 60) ];
 
-		document.getElementById("mil").innerHTML = time[0];
-		document.getElementById("sec").innerHTML = time[1];
-		document.getElementById("min").innerHTML = time[2];
+		document.getElementById("mil").innerHTML = time[0] > 99 ? time[0]: time[0] > 9 ? "0" + time[0]: "00" + time[0];
+		document.getElementById("sec").innerHTML = time[1] > 9 ? time[1]: "0" + time[1];
+		document.getElementById("min").innerHTML = time[2] > 9 ? time[2]: "0" + time[2];
 	}
 }
 
@@ -249,8 +251,14 @@ function starsLogic() {
 				points = cardMap.gamePoints;
 			}
 
-			if(cardMap.gamePoints > 0 )
-				document.getElementById(starID).style.backgroundImage = "linear-gradient(to bottom, orange " + points + "%, lightgray " + points + "%)";
+			if(cardMap.gamePoints > 0 ){
+				let gradient;
+				if(window.matchMedia("(orientation : portrait)").matches)
+					gradient = "linear-gradient(to right, orange " + points + "%, lightgray " + points + "%)";
+				else gradient = "linear-gradient(to bottom, orange " + points + "%, lightgray " + points + "%)";
+
+				document.getElementById(starID).style.backgroundImage = gradient;
+			}
 
 			if (cardMap.gamePoints < 200 && cardMap.gamePoints >= 100) {
 				document.getElementById("star1").style.backgroundImage = lostStar;

@@ -122,8 +122,48 @@ body {
 		font-size: 5vw;
 	}
 
+	.potrait {
+		display: none;
+	}
+
+	.landscape {
+		display: block;
+	}
+
 	h1	{
 		font-size: 3vw;
+	}
+
+	@media (orientation : portrait){
+		top: 0px;
+		left: 50%;
+		width: 75%;
+		transform: translate(-50%);
+
+		.stopwatch {
+			float: right;
+		}
+
+		h1 {
+			display:inline;
+			float: left;
+			font-size: 10vw;
+		}
+
+		.potrait {
+			display: block;
+			font-weight: lighter;
+		}
+
+		.landscape {
+			display: none;
+		}
+
+		#restart {
+			margin-bottom: none;
+			float: left;
+			font-size: 10vw;
+		}
 	}
 }
 
@@ -143,6 +183,43 @@ body {
 		color: transparent;
 		-webkit-background-clip: text;
 		background-clip: text;
+	}
+
+	h1.potrait {
+		display: none;
+	}
+
+	@media (orientation : portrait){
+		left: 50%;
+		top: auto;
+		bottom: 0%;
+		width: 75%;
+		height: 10%;
+		transform: translate(-50%);
+
+		.stars {
+			display:inline;
+			float: left;
+			font-size: 5vw;
+		}
+
+		br.potrait {
+			display: none;
+		}
+
+		h1.potrait {
+			display: inline;
+		}
+
+		.moves {
+			float: right;
+			font-size: 3vw;
+			text-align: center;
+
+			h1	{
+				display:inline;
+			}
+		}
 	}
 }
 
@@ -172,12 +249,4 @@ body {
 			}
 		}
 	}
-}
-
-.restart {
-	position: fixed;
-	top: 0%;
-	left: 0%;
-	padding: 2%;
-	font-size: 2vw;
 }
