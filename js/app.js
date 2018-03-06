@@ -131,6 +131,10 @@ let cardMap = {
 
 		document.querySelector("#end").style.display = "none";
 		document.querySelector(".menu-bg").classList.remove("menu-bg-show");
+
+		document.querySelector("#end-star1").style.display = "none";
+		document.querySelector("#end-star2").style.display = "none";
+		document.querySelector("#end-star3").style.display = "none";
 	},
 
 	get gameWin () {
