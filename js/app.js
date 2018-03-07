@@ -17,7 +17,6 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "b
 					"gem", "graduation-cap", "car", "headphones", "image", "shopping-bag", "female", "thermometer-half" ];
 
 document.addEventListener("DOMContentLoaded", function() {
-	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
 	document.querySelector("#restart-end").addEventListener("click", restartGame);
