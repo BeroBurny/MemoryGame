@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
 	document.querySelector("#restart-end").addEventListener("click", restartGame);
-	setTimeout(function () { sysHeight(); buildGrid(); }, 1000);
+	setTimeout(function () { sysHeight(); buildGrid(); }, 250);
 });
 
 let cardMap = {
@@ -279,18 +279,21 @@ function starsLogic() {
 }
 
 function clickCard(element){
-	if(cardMap.secondCard && element.path[0].id != "game" && element.path[0].className != "card-space"){
+	if(cardMap.secondCard && element.target.id != "game" && element.target.className != "card-space"){
 		let elem, cartNum, cardName;
-		if(element.srcElement.parentElement.className !=  "card") {
-			elem = element.srcElement.parentElement.parentElement;
-			cartNum = element.path[3].style.order;
-			cardName = element.path[0].classList[2];
-		} else {
-			elem = element.srcElement.parentElement;
-			cartNum = element.path[2].style.order;
-			if(cardMap.map[cartNum][0]) cardName = element.path[0].firstChild.classList[2];
-			else cardName = element.path[0].nextSibling.firstChild.classList[2];
+		if(element.target) {
+			if(element.target.parentElement.className !=  "card") {
+				elem = element.target.parentElement.parentElement;
+				cartNum = element.target.parentElement.parentElement.parentElement.style.order;
+				cardName = element.target.classList[2];
+			} else {
+				elem = element.target.parentElement;
+				cartNum = element.target.parentElement.parentElement.style.order;
+				if(cardMap.map[cartNum][0]) cardName = element.target.firstChild.classList[2];
+				else cardName = element.target.nextSibling.firstChild.classList[2];
+			}
 		}
+
 		if(!cardMap.map[cartNum][1] && !cardMap.gameWin) {
 			let rotType = elem.style.transform != "rotateY(180deg)";
 			flipCard(elem, rotType);
@@ -335,6 +338,7 @@ function clickCard(element){
 			starsLogic();
 		}
 	}
+
 	function flipCard(elem, type) {
 		var pos = 0;
 		type ? pos = 0 : pos = 180;
