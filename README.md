@@ -1,7 +1,7 @@
 # MemoryGame
 
 ## Demo
-* **gitHub page* [https://beroburny.github.io/MemoryGame/](https://beroburny.github.io/MemoryGame/)
+* **gitHub page** [https://beroburny.github.io/MemoryGame/](https://beroburny.github.io/MemoryGame/)
 
 ## Author
 
