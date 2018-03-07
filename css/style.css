@@ -1,0 +1,224 @@
+/* Page stylesheet */
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow: hidden;
+  height: 100vh;
+}
+.center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.menu-bg {
+  display: none;
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.5;
+}
+.menu-bg-show {
+  display: block;
+  animation: fadein 0.5s;
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+#game {
+  z-index: 2;
+  padding: 1%;
+  display: flex;
+  position: relative;
+  flex-flow: row wrap;
+  justify-content: stretch;
+  width: 40%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 5px solid rgba(1, 1, 1, 0.1);
+  border-radius: 15px;
+  text-align: center;
+  font-size: 5vw;
+}
+@media (orientation: portrait) {
+  #game {
+    width: 90%;
+    font-size: 15vw;
+  }
+}
+@media (max-width: 900px) {
+  #game {
+    font-size: 11vw;
+  }
+}
+#game .card-space {
+  flex-grow: 1;
+  width: 23%;
+  padding: 1%;
+  position: relative;
+}
+#game .card-space .card {
+  width: 92%;
+  height: 92%;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+#game .card-space .card figure {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 5px;
+  border: 1px solid rgba(1, 1, 1, 0.75);
+}
+#game .card-space .card .front {
+  background: lightblue;
+}
+#game .card-space .card .back {
+  transform: rotateY(180deg);
+  background: white;
+  -moz-transition: all 1s;
+  -webkit-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+}
+#game .card-space .card .bad {
+  background: red;
+}
+#game .card-space .card .good {
+  background: lightgreen;
+}
+#game-timer {
+  position: fixed;
+  width: 25%;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  padding: 2%;
+  text-align: center;
+}
+#game-timer #restart {
+  margin-bottom: 20%;
+  font-size: 5vw;
+}
+#game-timer .potrait {
+  display: none;
+}
+#game-timer .landscape {
+  display: block;
+}
+#game-timer h1 {
+  font-size: 3vw;
+}
+@media (orientation: portrait) {
+  #game-timer {
+    top: 0;
+    left: 50%;
+    width: 75%;
+    transform: translate(-50%);
+  }
+  #game-timer .stopwatch {
+    float: right;
+  }
+  #game-timer h1 {
+    display: inline;
+    float: left;
+    font-size: 10vw;
+  }
+  #game-timer .potrait {
+    display: block;
+    font-weight: lighter;
+  }
+  #game-timer .landscape {
+    display: none;
+  }
+  #game-timer #restart {
+    float: left;
+    font-size: 10vw;
+  }
+}
+#game-stars {
+  position: fixed;
+  display: inline;
+  width: 25%;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  font-size: 2.5vw;
+  text-align: center;
+  padding: 2%;
+}
+#game-stars #star1,
+#game-stars #star2,
+#game-stars #star3 {
+  background: linear-gradient(to bottom, orange 100%, lightgray 100%);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+#game-stars h1.potrait {
+  display: none;
+}
+@media (orientation: portrait) {
+  #game-stars {
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    width: 75%;
+    height: 10%;
+    transform: translate(-50%);
+  }
+  #game-stars .stars {
+    display: inline;
+    float: left;
+    font-size: 5vw;
+  }
+  #game-stars br.potrait {
+    display: none;
+  }
+  #game-stars h1.potrait {
+    display: inline;
+  }
+  #game-stars .moves {
+    float: right;
+    font-size: 3vw;
+    text-align: center;
+  }
+  #game-stars .moves h1 {
+    display: inline;
+  }
+}
+#end {
+  display: none;
+  text-align: center;
+  color: white;
+  font-size: 4vw;
+  z-index: 10;
+}
+#end div {
+  margin-top: 5%;
+  margin-bottom: 15%;
+  color: orange;
+}
+@media (orientation: portrait) {
+  #end #restart-end {
+    font-size: 20vw;
+  }
+}
+#end #end-star1,
+#end #end-star2,
+#end #end-star3 {
+  display: none;
+}
