@@ -8,7 +8,7 @@ camera-retro 	bus		briefcase		football-ball
 bowling-ball 	gem	 	compass			thermometer-half
 envelope 		eye		female			heartbeat image
 eye-dropper		filter	volume-up		gamepad
-fire flag		bath	headphones
+headphones		fire	flag			bath
 */
 
 const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "birthday-cake", "tint", "volume-up",
@@ -16,13 +16,17 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "b
 					"heartbeat", "eye", "fire-extinguisher", "filter", "fire", "envelope", "football-ball", "gamepad",
 					"gem", "graduation-cap", "car", "headphones", "image", "shopping-bag", "female", "thermometer-half" ];
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function() {
 	document.querySelector("#main-menu ul").addEventListener("click", menuClickHandler);
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
 	document.querySelector("#restart-end").addEventListener("click", restartGame);
-	setTimeout(function () { sysHeight(); buildGrid(); }, 250);
+	setTimeout(function() {
+		sysHeight();
+		buildGrid();
+	}, 250);
 });
+window.addEventListener("resize", sysHeight);
 
 let cardMap = {
 	map: [[]],
@@ -42,28 +46,28 @@ let cardMap = {
 	clicks: 0,
 	movesLeft: 8,
 
-	addCard (id, open, correct) {
+	addCard(id, open, correct) {
 		this.map[id] = [open, correct];
 	},
 
-	addClick (){
+	addClick() {
 		this.clicks++;
 		this.movePoints++;
 
 		document.getElementById("clicks").innerHTML = this.clicks;
 	},
 
-	openCard (id) {
+	openCard(id) {
 		this.map[id][0] = true;
 		this.activeCards++;
 	},
 
-	closeCard (id) {
+	closeCard(id) {
 		this.map[id][0] = false;
 		this.activeCards--;
 	},
 
-	theyMatch (cardA, cardB) {
+	theyMatch(cardA, cardB) {
 		this.map[cardA][1] = true;
 		this.map[cardB][1] = true;
 		this.activeCards = 0;
@@ -71,7 +75,7 @@ let cardMap = {
 		this.movesLeft--;
 	},
 
-	dintMatch (cardA, cardB) {
+	dintMatch(cardA, cardB) {
 		this.map[cardA][0] = false;
 		this.map[cardB][0] = false;
 		this.activeCards = 0;
@@ -79,16 +83,16 @@ let cardMap = {
 		this.punishPoints += 2;
 	},
 
-	startTimer () {
+	startTimer() {
 		this.startTime = Date.now();
 		this.endTime = this.startTime + (60 * 60 * 1000) - 1;
 		gameTimerUI();
 	},
 
-	starDecay () {
+	starDecay() {
 		this.gamePoints--;
-		if(this.gamePoints < 200 ) this.gamePoints--;
-		if(this.gamePoints < 100 ) this.gamePoints--;
+		if (this.gamePoints < 200) this.gamePoints--;
+		if (this.gamePoints < 100) this.gamePoints--;
 		if (this.punishPoints) {
 			this.punishPoints--;
 			this.gamePoints--;
@@ -99,7 +103,7 @@ let cardMap = {
 		}
 	},
 
-	resetGame () {
+	resetGame() {
 		this.map = [[]];
 
 		this.startTime = false;
@@ -137,11 +141,11 @@ let cardMap = {
 		document.querySelector("#end-star3").style.display = "none";
 	},
 
-	get gameWin () {
+	get gameWin() {
 		return this.movesLeft > 0 ? false: true;
 	},
 
-	get secondCard () {
+	get secondCard() {
 		return this.activeCards >= 2 ? false: true;
 	},
 };
@@ -154,43 +158,22 @@ function restartGame() {
 }
 
 function emtyGrid() {
-	for(let card of document.querySelectorAll(".card-space"))
+	document.querySelectorAll(".card-space").forEach(function(card) {
 		card.remove();
+	});
 }
 
-window.addEventListener('resize', sysHeight);
-
-function sysHeight(){
+function sysHeight() {
 	document.getElementById("game").style.height = document.getElementById("game").offsetWidth + "px";
 	document.getElementById("game").style.perspective = document.getElementById("game").offsetWidth + "px";
 }
 
-function  menuClickHandler(element){
-	if(element.path[1].id != "main-menu"){
-		switch (element.path[1].id) {
-			case "classic":
-				break;
-			case "classic-time":
-				break;
-			case "classic-shuffle":
-				break;
-			case "memorize":
-				break;
-			case "memorize-shuffle":
-				break;
-			default:
-				console.log("Error unknown button pressed");
-				console.log(element);
-		}
-	}
-}
-
-function buildGrid(){
+function buildGrid() {
 	let card = [], order = [];
 
 	while (card.length < 8) {
 		let tempCard = cardIcons[Math.floor(Math.random() * cardIcons.length)];
-		for (var i = 0; i < card.length; i++) if(card[i] === tempCard) card.splice(i, 1);
+		for (var i = 0; i < card.length; i++) if (card[i] === tempCard) card.splice(i, 1);
 		card.push(tempCard);
 	}
 	for (var i = 0; i < 8; i++) {
@@ -198,19 +181,19 @@ function buildGrid(){
 		createCard(card[i], pozManage());
 	}
 
-	function pozManage(){
+	function pozManage() {
 		let need = true;
 		let numb = 0;
 		while (need) {
 			let tempNumb = Math.floor(Math.random() * 16);
-			if(!order[tempNumb]) need = false;
+			if (!order[tempNumb]) need = false;
 			numb = tempNumb;
 		}
 		order[numb] = true;
 		return numb;
 	}
 
-	function createCard(card, order){
+	function createCard(card, order) {
 		cardMap.addCard(order, false, false)
 		let htmlElement = "<div class=\"card-space\" style=\"order: " + order + ";\">" +
 								"<div class=\"card\">" +
@@ -225,7 +208,7 @@ function buildGrid(){
 function gameTimerUI() {
 	cardMap.intervalTimerObj = setInterval(updateUI, 11);
 	function updateUI() {
-		if(cardMap.endTime <= Date.now()) clearInterval(cardMap.intervalTimerObj);
+		if (cardMap.endTime <= Date.now()) clearInterval(cardMap.intervalTimerObj);
 		const timePasst = Date.now() - cardMap.startTime;
 		let time = [ Math.floor(timePasst % 1000),
 					Math.floor((timePasst / 1000) % 60),
@@ -242,10 +225,10 @@ function starsLogic() {
 	function updateStars() {
 		cardMap.starDecay();
 
-		if(!(cardMap.gamePoints >= 300)) {
+		if (!(cardMap.gamePoints >= 300)) {
 			let starID, points;
 			let lostStar = "linear-gradient(135deg, lightgray 14%, gray 15%, gray 29%, lightgray 30%, lightgray 44%, gray 45%, gray 59%, lightgray 60%,  lightgray 74%, gray 75%,  gray 89%, lightgray 90%)";
-			if(cardMap.gamePoints >= 200) {
+			if (cardMap.gamePoints >= 200) {
 				starID = "star1";
 				points = cardMap.gamePoints - 200;
 			}
@@ -257,9 +240,9 @@ function starsLogic() {
 				points = cardMap.gamePoints;
 			}
 
-			if(cardMap.gamePoints > 0 ){
+			if (cardMap.gamePoints > 0) {
 				let gradient;
-				if(window.matchMedia("(orientation : portrait)").matches)
+				if (window.matchMedia("(orientation : portrait)").matches)
 					gradient = "linear-gradient(to right, orange " + points + "%, lightgray " + points + "%)";
 				else gradient = "linear-gradient(to bottom, orange " + points + "%, lightgray " + points + "%)";
 
@@ -270,7 +253,7 @@ function starsLogic() {
 				document.getElementById("star1").style.backgroundImage = lostStar;
 			} else if (cardMap.gamePoints < 100 && cardMap.gamePoints >= 0) {
 				document.getElementById("star2").style.backgroundImage = lostStar;
-			} if (cardMap.gamePoints < 0 ) {
+			} if (cardMap.gamePoints < 0) {
 				document.getElementById("star3").style.backgroundImage = lostStar;
 				endGame();
 			}
@@ -278,35 +261,33 @@ function starsLogic() {
 	}
 }
 
-function clickCard(element){
-	if(cardMap.secondCard && element.target.id != "game" && element.target.className != "card-space"){
+function clickCard(element) {
+	if (cardMap.secondCard && element.target.id != "game" && element.target.className != "card-space") {
 		let elem, cartNum, cardName;
-		if(element.target) {
-			if(element.target.parentElement.className !=  "card") {
-				elem = element.target.parentElement.parentElement;
-				cartNum = element.target.parentElement.parentElement.parentElement.style.order;
-				cardName = element.target.classList[2];
-			} else {
-				elem = element.target.parentElement;
-				cartNum = element.target.parentElement.parentElement.style.order;
-				if(cardMap.map[cartNum][0]) cardName = element.target.firstChild.classList[2];
-				else cardName = element.target.nextSibling.firstChild.classList[2];
-			}
+		if (element.target.parentElement.className !=  "card") {
+			elem = element.target.parentElement.parentElement;
+			cartNum = element.target.parentElement.parentElement.parentElement.style.order;
+			cardName = element.target.classList[2];
+		} else {
+			elem = element.target.parentElement;
+			cartNum = element.target.parentElement.parentElement.style.order;
+			if (cardMap.map[cartNum][0]) cardName = element.target.firstChild.classList[2];
+			else cardName = element.target.nextSibling.firstChild.classList[2];
 		}
 
-		if(!cardMap.map[cartNum][1] && !cardMap.gameWin) {
+		if (!cardMap.map[cartNum][1] && !cardMap.gameWin) {
 			let rotType = elem.style.transform != "rotateY(180deg)";
 			flipCard(elem, rotType);
 			cardMap.addClick();
 
-			setTimeout(function () {
-				if(cardMap.map[cartNum][0]){
+			/* Animate and check if card matches */
+			setTimeout(function() {
+				if (cardMap.map[cartNum][0]) {
 					cardMap.closeCard(cartNum);
 					cardMap.firstCard = true;
-				}
-				else {
+				} else {
 					cardMap.openCard(cartNum);
-					if(cardMap.firstCard === true) cardMap.firstCard = [elem, cartNum, cardName];
+					if (cardMap.firstCard === true) cardMap.firstCard = [elem, cartNum, cardName];
 					else if (cardMap.firstCard[2] === cardName) {
 						elem.lastChild.classList.add("good");
 						cardMap.firstCard[0].lastChild.classList.add("good");
@@ -324,16 +305,16 @@ function clickCard(element){
 							cardMap.firstCard[0].lastChild.classList.remove("bad");
 
 							cardMap.dintMatch(cardMap.firstCard[1], cartNum);
-						}, 1000 );
+						}, 1000);
 					}
 				}
-				if(cardMap.gameWin) {
+				if (cardMap.gameWin) {
 					cardMap.finishTime = Date.now();
 					endGame();
 				}
 			}, 300);
 		}
-		if(!cardMap.startTime) {
+		if (!cardMap.startTime) {
 			cardMap.startTimer();
 			starsLogic();
 		}
@@ -348,7 +329,7 @@ function clickCard(element){
 			else if ((pos ==  360 && !type)) clearInterval(id);
 			else {
 				pos += 10;
-				elem.style.transform = "rotateY( " + pos + "deg )";
+				elem.style.transform = "rotateY( " + pos + "deg)";
 			}
 		}
 	}
