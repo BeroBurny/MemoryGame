@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 let cardMap = {
 	map: [[]],
+	turning: false,
 
 	startTime: false,
 	finishTime: false,
@@ -265,7 +266,8 @@ function starsLogic() {
 }
 
 function clickCard(element) {
-	if (cardMap.secondCard && element.target.id != "game" && element.target.className != "card-space") {
+	if (cardMap.secondCard && element.target.id != "game" && element.target.className != "card-space" && !cardMap.turning) {
+		cardMap.turning = true;
 		let elem, cartNum, cardName;
 		if (element.target.parentElement.className !=  "card") {
 			elem = element.target.parentElement.parentElement;
