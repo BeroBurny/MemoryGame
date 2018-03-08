@@ -1,5 +1,5 @@
-/* Cards!
-List of icon used for Cards
+/** Cards array!
+List of icon used in cardIcons
 
 user-secret		tint	ambulance		graduation-cap
 shopping-bag	bug 	bomb			bell
@@ -8,25 +8,39 @@ camera-retro 	bus		briefcase		football-ball
 bowling-ball 	gem	 	compass			thermometer-half
 envelope 		eye		female			heartbeat image
 eye-dropper		filter	volume-up		gamepad
-headphones		fire	flag			bath
-*/
-
+headphones		fire	flag			bath */
 const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "birthday-cake", "tint", "volume-up",
 					"eye-dropper", "camera", "camera-retro", "bell", "briefcase", "bowling-ball", "compass", "bomb",
 					"heartbeat", "eye", "fire-extinguisher", "filter", "fire", "envelope", "football-ball", "gamepad",
 					"gem", "graduation-cap", "car", "headphones", "image", "shopping-bag", "female", "thermometer-half" ];
 
+/** Event Listener who add all Event Listeners */
 document.addEventListener("DOMContentLoaded", function() {
 	window.addEventListener("resize", sysHeight);
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
 	document.querySelector("#restart-end").addEventListener("click", restartGame);
+	// Set grid with after a page loads
 	setTimeout(function() {
 		sysHeight();
 		buildGrid();
 	}, 250);
 });
 
+/** Game object resposible for storing data states about game
+Fuctions:
+	setCard()  set card state inside in card "map"
+	addClick()  add speed to game after using a clic
+	openCard()  change card state to card "map"
+	closeCard()  change card state to card "map"
+	theyMatch(cardA, cardB)  set matched card status inside "map"
+	dintMatch(cardA, cardB)  set card state back begining
+	startTimer()  start game timer
+	starDecay()  process how fast star will decay
+	resetGame()  reset game status
+Geters:
+	gameWin()  return boolean if is game finished.
+	secondCard()  return boolean if there is open 2 card more */
 let cardMap = {
 	map: [[]],
 	turning: false,
@@ -154,6 +168,7 @@ let cardMap = {
 	},
 };
 
+/** Stop game timers and call game reset */
 function restartGame() {
 	clearInterval(cardMap.intervalTimerObj);
 	clearInterval(cardMap.intervalStarsObj);
@@ -161,17 +176,20 @@ function restartGame() {
 	cardMap.resetGame();
 }
 
+/** Delete all game cards */
 function emtyGrid() {
 	document.querySelectorAll(".card-space").forEach(function(card) {
 		card.remove();
 	});
 }
 
+/** Set height of game "board" */
 function sysHeight() {
 	document.getElementById("game").style.height = document.getElementById("game").offsetWidth + "px";
 	document.getElementById("game").style.perspective = document.getElementById("game").offsetWidth + "px";
 }
 
+/** Generate game grids */
 function buildGrid() {
 	let card = [], order = [];
 
@@ -185,6 +203,7 @@ function buildGrid() {
 		createCard(card[i], pozManage());
 	}
 
+	// radomazie generate unique ID for card positioning
 	function pozManage() {
 		let need = true;
 		let numb = 0;
@@ -197,6 +216,7 @@ function buildGrid() {
 		return numb;
 	}
 
+	// drawn card on grid
 	function createCard(card, order) {
 		cardMap.setCard(order, false, false)
 		let htmlElement = "<div class=\"card-space\" style=\"order: " + order + ";\">" +
@@ -209,6 +229,7 @@ function buildGrid() {
 	}
 }
 
+/** Game stopwatch manager */
 function gameTimerUI() {
 	cardMap.intervalTimerObj = setInterval(updateUI, 11);
 	function updateUI() {
@@ -224,6 +245,7 @@ function gameTimerUI() {
 	}
 }
 
+/** Control star aperience on web app */
 function starsLogic() {
 	cardMap.intervalStarsObj = setInterval(updateStars, 500);
 	function updateStars() {
@@ -265,6 +287,7 @@ function starsLogic() {
 	}
 }
 
+/** Process click after clicking on card check if there any matches and animate it */
 function clickCard(element) {
 	if (cardMap.secondCard && element.target.id != "game" && element.target.className != "card-space" && !cardMap.turning) {
 		cardMap.turning = true;
@@ -317,6 +340,7 @@ function clickCard(element) {
 					cardMap.finishTime = Date.now();
 					endGame();
 				}
+				cardMap.turning = false;
 			}, 300);
 		}
 		if (!cardMap.startTime) {
@@ -340,6 +364,7 @@ function clickCard(element) {
 	}
 }
 
+/** Diplay modal with end game information */
 function endGame() {
 	let endMsg;
 
