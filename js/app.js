@@ -17,6 +17,7 @@ const cardIcons = [ "user-secret", "ambulance", "bath", "bus", "bug", "flag", "b
 					"gem", "graduation-cap", "car", "headphones", "image", "shopping-bag", "female", "thermometer-half" ];
 
 document.addEventListener("DOMContentLoaded", function() {
+	window.addEventListener("resize", sysHeight);
 	document.querySelector("#game").addEventListener("click", clickCard);
 	document.querySelector("#restart").addEventListener("click", restartGame);
 	document.querySelector("#restart-end").addEventListener("click", restartGame);
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		buildGrid();
 	}, 250);
 });
-window.addEventListener("resize", sysHeight);
 
 let cardMap = {
 	map: [[]],
@@ -45,15 +45,12 @@ let cardMap = {
 	clicks: 0,
 	movesLeft: 8,
 
-	addCard(id, open, correct) {
+	setCard(id, open, correct) {
 		this.map[id] = [open, correct];
 	},
 
 	addClick() {
-		this.clicks++;
 		this.movePoints++;
-
-		document.getElementById("clicks").innerHTML = this.clicks;
 	},
 
 	openCard(id) {
@@ -72,6 +69,9 @@ let cardMap = {
 		this.activeCards = 0;
 		this.firstCard = true;
 		this.movesLeft--;
+
+		this.clicks++;
+		document.getElementById("clicks").innerHTML = this.clicks;
 	},
 
 	dintMatch(cardA, cardB) {
@@ -80,6 +80,9 @@ let cardMap = {
 		this.activeCards = 0;
 		this.firstCard = true;
 		this.punishPoints += 2;
+
+		this.clicks++;
+		document.getElementById("clicks").innerHTML = this.clicks;
 	},
 
 	startTimer() {
@@ -104,6 +107,7 @@ let cardMap = {
 
 	resetGame() {
 		this.map = [[]];
+		this.turning = false;
 
 		this.startTime = false;
 		this.finishTime = false;
@@ -193,7 +197,7 @@ function buildGrid() {
 	}
 
 	function createCard(card, order) {
-		cardMap.addCard(order, false, false)
+		cardMap.setCard(order, false, false)
 		let htmlElement = "<div class=\"card-space\" style=\"order: " + order + ";\">" +
 								"<div class=\"card\">" +
 									"<figure class=\"front\"></figure>" +
